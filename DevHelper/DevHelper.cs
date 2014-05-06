@@ -10,7 +10,6 @@ namespace DevHelper
 {
     public partial class DevHelper : MonoBehaviour
     {
-        public bool autoLoad = true;
         public bool autoLoadSave = true;
         public string autoLoadSaveName = "default";
 
@@ -46,7 +45,6 @@ namespace DevHelper
             PluginConfiguration config = PluginConfiguration.CreateForType<DevHelper>();
             config.load();
 
-            autoLoad = config.GetValue<bool>("autoLoad");
             autoLoadSave = config.GetValue<bool>("autoLoadSave");
             autoLoadSaveName = config.GetValue<string>("autoLoadSaveName");
             autoLoadScene = config.GetValue<bool>("autoLoadScene");
@@ -56,7 +54,6 @@ namespace DevHelper
         public void saveConfigXML()
         {
             PluginConfiguration config = PluginConfiguration.CreateForType<DevHelper>();
-            config.SetValue("autoLoad", autoLoad);
             config.SetValue("autoLoadSave", autoLoadSave);
             config.SetValue("autoLoadSaveName", autoLoadSaveName);
             config.SetValue("autoLoadScene", autoLoadScene);
@@ -67,9 +64,6 @@ namespace DevHelper
         private bool bDoOnce = true;
         private void Update()
         {
-            if (!autoLoad)
-                return;
-
             var menu = GameObject.Find("MainMenu");
             if (menu != null && bDoOnce)
             {
