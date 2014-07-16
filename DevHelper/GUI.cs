@@ -6,6 +6,8 @@ using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
 using KSP.IO;
+using MuMech;
+
 
 namespace DevHelper
 {
@@ -18,6 +20,7 @@ namespace DevHelper
         private ComboBox comboBoxControl = new ComboBox();
         private ComboBox comboBoxControlSpecificScene = new ComboBox();
         private GUIStyle listStyle = new GUIStyle();
+
 
         private void InitComboBox()
         {
@@ -55,6 +58,10 @@ namespace DevHelper
 
         private void OnGUI()
         {
+            if (ToolbarManager.ToolbarAvailable)
+            {
+                DHButtons();
+            }
             if (!isTooLateToLoad)
             {
                 //Auto load feature
@@ -80,6 +87,7 @@ namespace DevHelper
                 }
             }
         }
+
 
     }
 

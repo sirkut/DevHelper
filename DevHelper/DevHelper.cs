@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
 using KSP.IO;
+using MuMech;
 
 namespace DevHelper
 {
@@ -24,6 +25,7 @@ namespace DevHelper
             saveNames = dirs.Where(x => System.IO.File.Exists(x + "\\persistent.sfs")).Select(x => x.Split(new[] { '\\' })[1]).ToList();
         }
 
+        //IButton DHReloadDatabase;
         private void Awake()
         {
             print("Injector awake");
@@ -109,7 +111,32 @@ namespace DevHelper
                 }
             }
         }
+        private IButton DHReloadDatabase;
 
+	    //private BoxDrawable boxDrawable;
+        internal void DHButtons() {
+		    // button that toggles its icon when clicked
+            DHReloadDatabase = ToolbarManager.Instance.add("DevHelper", "DHReloadGD");
+            DHReloadDatabase.TexturePath = "DevHelper/Textures/icon_buttonReload";
+            DHReloadDatabase.ToolTip = "Reload Game Database";
+            DHReloadDatabase.Visibility = new GameScenesVisibility(GameScenes.EDITOR, GameScenes.SPH, GameScenes.SPACECENTER);
+            DHReloadDatabase.OnClick += (e) =>
+            {
+                GameDatabase.Instance.Recompile = true;
+                GameDatabase.Instance.StartLoad();
+                PartLoader.Instance.Recompile = true;
+                PartLoader.Instance.StartLoad();
+            };
+	    }
+
+        void OnDestroy()
+        {
+            if (ToolbarManager.ToolbarAvailable)
+            {
+                DHReloadDatabase.Destroy();
+            }
+        }
+        
         
         private bool isTooLateToLoad = false;
       
