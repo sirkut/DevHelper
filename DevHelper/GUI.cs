@@ -6,7 +6,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
 using KSP.IO;
-using MuMech;
+//using MuMech;
 
 
 namespace DevHelper
@@ -58,10 +58,10 @@ namespace DevHelper
 
         private void OnGUI()
         {
-            if (ToolbarManager.ToolbarAvailable)
-            {
-                DHButtons();
-            }
+            //if (ToolbarManager.ToolbarAvailable)
+            //{
+            //    DHButtons();
+            //}
             if (!isTooLateToLoad)
             {
                 //Auto load feature

@@ -5,7 +5,8 @@ using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
 using KSP.IO;
-using MuMech;
+
+//using MuMech;
 
 namespace DevHelper
 {
@@ -34,6 +35,12 @@ namespace DevHelper
         private void Start()
         {
             print("DevHelper Starting");
+
+            if (ToolbarManager.ToolbarAvailable)
+            {
+                DHButtons();
+                Debug.Log("buttons loaded");
+            }
 
             loadConfigXML();
             FindSaves();
@@ -113,9 +120,10 @@ namespace DevHelper
         }
         private IButton DHReloadDatabase;
 
-	    //private BoxDrawable boxDrawable;
-        internal void DHButtons() {
-		    // button that toggles its icon when clicked
+        //private BoxDrawable boxDrawable;
+        internal void DHButtons()
+        {
+            // button that toggles its icon when clicked
             DHReloadDatabase = ToolbarManager.Instance.add("DevHelper", "DHReloadGD");
             DHReloadDatabase.TexturePath = "DevHelper/Textures/icon_buttonReload";
             DHReloadDatabase.ToolTip = "Reload Game Database";
@@ -127,7 +135,7 @@ namespace DevHelper
                 PartLoader.Instance.Recompile = true;
                 PartLoader.Instance.StartLoad();
             };
-	    }
+        }
 
         void OnDestroy()
         {
