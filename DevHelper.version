@@ -1,0 +1,17 @@
+{ 
+   "NAME":"Dev Helper",
+   "URL":"http://forum.kerbalspaceprogram.com/threads/60880",
+   "DOWNLOAD":"https://kerbalstuff.com/mod/22/Magic%20Smoke%20Industries%20DevHelper",
+   "CHANGE_LOG_URL":"",
+   "VERSION":{  
+      "MAJOR":0,
+      "MINOR":6,
+      "PATCH":0,
+      "BUILD":0
+   },
+   "KSP_VERSION":{  
+      "MAJOR":0,
+      "MINOR":24,
+      "PATCH":2
+   }
+}}
