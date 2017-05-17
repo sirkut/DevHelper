@@ -91,15 +91,20 @@ namespace DevHelper
                             {
                                 case "VAB":
                                     HighLogic.CurrentGame.startScene = GameScenes.EDITOR;
+                                    HighLogic.CurrentGame.editorFacility = EditorFacility.VAB;
                                     break;
                                 case "SPH":
-                                    HighLogic.CurrentGame.startScene = GameScenes.SPH;
+                                    HighLogic.CurrentGame.startScene = GameScenes.EDITOR;
+                                    HighLogic.CurrentGame.editorFacility = EditorFacility.SPH;
                                     break;
                                 case "Tracking Station":
                                     HighLogic.CurrentGame.startScene = GameScenes.TRACKSTATION;
                                     break;
                                 case "Space Center":
                                     HighLogic.CurrentGame.startScene = GameScenes.SPACECENTER;
+                                    break;
+                                case "Flight":
+                                    HighLogic.CurrentGame.startScene = GameScenes.FLIGHT;
                                     break;
                                 default:
                                     HighLogic.CurrentGame.startScene = GameScenes.SPACECENTER;
@@ -127,7 +132,7 @@ namespace DevHelper
             DHReloadDatabase = ToolbarManager.Instance.add("DevHelper", "DHReloadGD");
             DHReloadDatabase.TexturePath = "DevHelper/Textures/icon_buttonReload";
             DHReloadDatabase.ToolTip = "Reload Game Database";
-            DHReloadDatabase.Visibility = new GameScenesVisibility(GameScenes.EDITOR, GameScenes.SPH, GameScenes.SPACECENTER);
+            DHReloadDatabase.Visibility = new GameScenesVisibility(GameScenes.EDITOR);
             DHReloadDatabase.OnClick += (e) =>
             {
                 GameDatabase.Instance.Recompile = true;
