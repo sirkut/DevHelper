@@ -103,6 +103,9 @@ namespace DevHelper
                                 case "Space Center":
                                     HighLogic.CurrentGame.startScene = GameScenes.SPACECENTER;
                                     break;
+                                case "Flight":
+                                    HighLogic.CurrentGame.startScene = GameScenes.FLIGHT;
+                                    break;
                                 default:
                                     HighLogic.CurrentGame.startScene = GameScenes.SPACECENTER;
                                     break;
