@@ -39,11 +39,14 @@ namespace DevHelper
 
         private void InitComboBoxScenes()
         {
-            comboBoxSelectedList = new GUIContent[4];
-            comboBoxSelectedList[0] = new GUIContent("VAB");
-            comboBoxSelectedList[1] = new GUIContent("SPH");
-            comboBoxSelectedList[2] = new GUIContent("Tracking Station");
-            comboBoxSelectedList[3] = new GUIContent("Space Center");
+            comboBoxSelectedList = new GUIContent[]
+            {
+                new GUIContent("VAB"),
+                new GUIContent("SPH"),
+                new GUIContent("Tracking Station"),
+                new GUIContent("Space Center"),
+                new GUIContent("Flight"),
+            };
             comboBoxControlSpecificScene.SelectedItemIndex = comboBoxSelectedList.ToList().FindIndex(x => x.text == autoLoadSceneName);
             //Debug.Log("scene index: " + comboBoxControlSpecificScene.SelectedItemIndex);
             listStyle.normal.textColor = Color.white;
