@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using KSP.IO;
 
 //using MuMech;
@@ -36,6 +35,12 @@ namespace DevHelper
         {
             log("Injector awake");
             DontDestroyOnLoad(this);
+        }
+
+        void OnEnable()
+        {
+            log("Injector enabled");
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void Start()
@@ -155,18 +160,17 @@ namespace DevHelper
                 DHReloadDatabase.Destroy();
             }
         }
-        
-        
+
         private bool isTooLateToLoad = false;
-      
-
-        public void OnLevelWasLoaded(int level)
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            print("OnLevelWasLoaded:" + level);
-
+            log("OnSceneLoaded for Scene " + scene.name);
             if (PSystemManager.Instance != null && ScaledSpace.Instance == null)
             {
                 isTooLateToLoad = true;
+                log("It's now too late to load");
+                // we no longer need this callback
+                SceneManager.sceneLoaded -= OnSceneLoaded;
             }
         }
     }
