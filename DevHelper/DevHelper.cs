@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using KSP.IO;
 
 //using MuMech;
@@ -18,10 +17,15 @@ namespace DevHelper
         public bool autoLoadScene = true;
         public string autoLoadSceneName = "VAB";
 
+        private void log(string msg)
+        {
+            Debug.Log("[DevHelper] " + msg);
+        }
+
         private List<string> saveNames;
         private void FindSaves()
         {
-            print("FindSaves");
+            log("FindSaves");
             var dirs = Directory.GetDirectories(KSPUtil.ApplicationRootPath + "saves\\");
             saveNames = dirs.Where(x => System.IO.File.Exists(x + "\\persistent.sfs")).Select(x => x.Split(new[] { '\\' })[1]).ToList();
         }
@@ -29,17 +33,24 @@ namespace DevHelper
         //IButton DHReloadDatabase;
         private void Awake()
         {
-            print("Injector awake");
+            log("Injector awake");
             DontDestroyOnLoad(this);
         }
+
+        void OnEnable()
+        {
+            log("Injector enabled");
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
         private void Start()
         {
-            print("DevHelper Starting");
+            log("DevHelper Starting");
 
             if (ToolbarManager.ToolbarAvailable)
             {
                 DHButtons();
-                Debug.Log("buttons loaded");
+                log("buttons loaded");
             }
 
             loadConfigXML();
@@ -91,15 +102,20 @@ namespace DevHelper
                             {
                                 case "VAB":
                                     HighLogic.CurrentGame.startScene = GameScenes.EDITOR;
+                                    HighLogic.CurrentGame.editorFacility = EditorFacility.VAB;
                                     break;
                                 case "SPH":
-                                    HighLogic.CurrentGame.startScene = GameScenes.SPH;
+                                    HighLogic.CurrentGame.startScene = GameScenes.EDITOR;
+                                    HighLogic.CurrentGame.editorFacility = EditorFacility.SPH;
                                     break;
                                 case "Tracking Station":
                                     HighLogic.CurrentGame.startScene = GameScenes.TRACKSTATION;
                                     break;
                                 case "Space Center":
                                     HighLogic.CurrentGame.startScene = GameScenes.SPACECENTER;
+                                    break;
+                                case "Flight":
+                                    HighLogic.CurrentGame.startScene = GameScenes.FLIGHT;
                                     break;
                                 default:
                                     HighLogic.CurrentGame.startScene = GameScenes.SPACECENTER;
@@ -127,7 +143,7 @@ namespace DevHelper
             DHReloadDatabase = ToolbarManager.Instance.add("DevHelper", "DHReloadGD");
             DHReloadDatabase.TexturePath = "DevHelper/Textures/icon_buttonReload";
             DHReloadDatabase.ToolTip = "Reload Game Database";
-            DHReloadDatabase.Visibility = new GameScenesVisibility(GameScenes.EDITOR, GameScenes.SPH, GameScenes.SPACECENTER);
+            DHReloadDatabase.Visibility = new GameScenesVisibility(GameScenes.EDITOR);
             DHReloadDatabase.OnClick += (e) =>
             {
                 GameDatabase.Instance.Recompile = true;
@@ -144,18 +160,17 @@ namespace DevHelper
                 DHReloadDatabase.Destroy();
             }
         }
-        
-        
+
         private bool isTooLateToLoad = false;
-      
-
-        public void OnLevelWasLoaded(int level)
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            print("OnLevelWasLoaded:" + level);
-
+            log("OnSceneLoaded for Scene " + scene.name);
             if (PSystemManager.Instance != null && ScaledSpace.Instance == null)
             {
                 isTooLateToLoad = true;
+                log("It's now too late to load");
+                // we no longer need this callback
+                SceneManager.sceneLoaded -= OnSceneLoaded;
             }
         }
     }
