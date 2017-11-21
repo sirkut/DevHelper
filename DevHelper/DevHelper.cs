@@ -18,10 +18,15 @@ namespace DevHelper
         public bool autoLoadScene = true;
         public string autoLoadSceneName = "VAB";
 
+        private void log(string msg)
+        {
+            Debug.Log("[DevHelper] " + msg);
+        }
+
         private List<string> saveNames;
         private void FindSaves()
         {
-            print("FindSaves");
+            log("FindSaves");
             var dirs = Directory.GetDirectories(KSPUtil.ApplicationRootPath + "saves\\");
             saveNames = dirs.Where(x => System.IO.File.Exists(x + "\\persistent.sfs")).Select(x => x.Split(new[] { '\\' })[1]).ToList();
         }
@@ -29,17 +34,18 @@ namespace DevHelper
         //IButton DHReloadDatabase;
         private void Awake()
         {
-            print("Injector awake");
+            log("Injector awake");
             DontDestroyOnLoad(this);
         }
+
         private void Start()
         {
-            print("DevHelper Starting");
+            log("DevHelper Starting");
 
             if (ToolbarManager.ToolbarAvailable)
             {
                 DHButtons();
-                Debug.Log("buttons loaded");
+                log("buttons loaded");
             }
 
             loadConfigXML();
